@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dark Industrial</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --ink: #000;
+        --fog: rgba(255, 255, 255, 0.08);
+        --bone: #f2f2f2;
+        --rust: #aa2323;
+        --rust-glow: rgba(170, 35, 35, 0.5);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        width: 100%;
+        min-height: 100%;
+        background: var(--ink);
+      }
+
+      body {
+        display: grid;
+        place-items: center;
+        overflow: hidden;
+        position: relative;
+        font-family: "Arial Narrow", "Franklin Gothic Medium", "Impact", sans-serif;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        background: repeating-linear-gradient(
+          to bottom,
+          transparent 0,
+          transparent 2px,
+          rgba(255, 255, 255, 0.02) 3px
+        );
+        mix-blend-mode: screen;
+        opacity: 0.35;
+        z-index: 1;
+      }
+
+      .hero-video {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        object-fit: cover;
+        background: #000;
+      }
+
+      .audio-dock {
+        position: fixed;
+        left: 20px;
+        right: 20px;
+        bottom: 20px;
+        z-index: 2;
+        display: grid;
+        grid-template-columns: auto 1fr auto;
+        gap: 12px;
+        align-items: center;
+        padding: 12px;
+        border: 1px solid var(--fog);
+        background: linear-gradient(180deg, rgba(0, 0, 0, 0.88), rgba(10, 10, 10, 0.9));
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.6), inset 0 0 40px rgba(255, 255, 255, 0.03);
+      }
+
+      .play-link,
+      .download-link {
+        color: var(--bone);
+        text-decoration: none;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        border: 1px solid var(--bone);
+        padding: 10px 14px;
+        background: rgba(0, 0, 0, 0.7);
+        font: inherit;
+        cursor: pointer;
+      }
+
+      .play-link:hover,
+      .play-link:focus-visible,
+      .download-link:hover,
+      .download-link:focus-visible {
+        background: var(--bone);
+        color: #000;
+      }
+
+      .wave-shell {
+        min-width: 0;
+      }
+
+      #waveform {
+        width: 100%;
+        height: 96px;
+        display: block;
+        cursor: pointer;
+        border: 1px solid var(--fog);
+        background: linear-gradient(145deg, rgba(0, 0, 0, 0.96), rgba(18, 18, 18, 0.9));
+      }
+
+      .time-row {
+        display: flex;
+        justify-content: space-between;
+        color: var(--bone);
+        margin-top: 6px;
+        letter-spacing: 0.1em;
+        font-size: 11px;
+        opacity: 0.92;
+      }
+
+      @media (max-width: 900px) {
+        .audio-dock {
+          grid-template-columns: 1fr;
+        }
+
+        .play-link,
+        .download-link {
+          text-align: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <video
+      class="hero-video"
+      src="images/homepage faces.mp4"
+      autoplay
+      loop
+      muted
+      playsinline
+      preload="auto"
+      aria-label="Looping industrial video"
+    ></video>
+
+    <div class="audio-dock">
+      <button class="play-link" id="play-link" type="button">Set Them Free</button>
+      <div class="wave-shell">
+        <canvas id="waveform" width="1200" height="96" aria-label="Song waveform seek control"></canvas>
+        <div class="time-row">
+          <span id="current-time">00:00</span>
+          <span id="total-time">00:00</span>
+        </div>
+      </div>
+      <a class="download-link" href="music/The New Neurosis.mp3" download="The New Neurosis.mp3">Download</a>
+    </div>
+
+    <audio id="bg-audio" src="music/The New Neurosis.mp3" preload="auto"></audio>
+
+    <script>
+      const heroVideo = document.querySelector(".hero-video");
+      const playLink = document.querySelector("#play-link");
+      const bgAudio = document.querySelector("#bg-audio");
+      const waveform = document.querySelector("#waveform");
+      const currentTimeEl = document.querySelector("#current-time");
+      const totalTimeEl = document.querySelector("#total-time");
+
+      let bars = [];
+      let dragSeeking = false;
+
+      function formatTime(seconds) {
+        if (!Number.isFinite(seconds)) {
+          return "00:00";
+        }
+        const mins = Math.floor(seconds / 60);
+        const secs = Math.floor(seconds % 60);
+        return `${String(mins).padStart(2, "0")}:${String(secs).padStart(2, "0")}`;
+      }
+
+      function drawWave(progress = 0) {
+        if (!waveform) {
+          return;
+        }
+
+        const ctx = waveform.getContext("2d");
+        const width = waveform.width;
+        const height = waveform.height;
+
+        ctx.clearRect(0, 0, width, height);
+
+        if (!bars.length) {
+          return;
+        }
+
+        const count = bars.length;
+        const step = width / count;
+        const barWidth = Math.max(1, step * 0.72);
+        const progressIndex = Math.floor(progress * count);
+
+        for (let i = 0; i < count; i += 1) {
+          const value = bars[i];
+          const barHeight = 8 + value * (height * 0.8);
+          const x = i * step;
+          const y = (height - barHeight) / 2;
+
+          if (i <= progressIndex) {
+            ctx.fillStyle = "rgba(206, 48, 48, 0.96)";
+            ctx.shadowColor = "rgba(206, 48, 48, 0.5)";
+            ctx.shadowBlur = 8;
+          } else {
+            ctx.fillStyle = "rgba(230, 230, 230, 0.32)";
+            ctx.shadowBlur = 0;
+          }
+          ctx.fillRect(x, y, barWidth, barHeight);
+        }
+
+        const playheadX = Math.min(width - 1, Math.max(0, progress * width));
+        ctx.shadowBlur = 0;
+        ctx.strokeStyle = "rgba(255, 255, 255, 0.82)";
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(playheadX, 0);
+        ctx.lineTo(playheadX, height);
+        ctx.stroke();
+      }
+
+      function seekFromPointer(clientX) {
+        if (!bgAudio || !Number.isFinite(bgAudio.duration) || !waveform) {
+          return;
+        }
+        const rect = waveform.getBoundingClientRect();
+        const ratio = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+        bgAudio.currentTime = ratio * bgAudio.duration;
+      }
+
+      async function buildWaveformFromAudio() {
+        if (!bgAudio || !waveform) {
+          return;
+        }
+
+        try {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          const audioCtx = new AudioCtx();
+          const response = await fetch(bgAudio.currentSrc || bgAudio.src);
+          const buffer = await response.arrayBuffer();
+          const decoded = await audioCtx.decodeAudioData(buffer.slice(0));
+          const sourceData = decoded.getChannelData(0);
+          const barCount = 320;
+          const blockSize = Math.max(1, Math.floor(sourceData.length / barCount));
+          const nextBars = [];
+
+          for (let i = 0; i < barCount; i += 1) {
+            let sum = 0;
+            const start = i * blockSize;
+            const end = start + blockSize;
+            for (let j = start; j < end; j += 1) {
+              sum += Math.abs(sourceData[j] || 0);
+            }
+            nextBars.push(sum / blockSize);
+          }
+
+          const peak = Math.max(...nextBars, 0.0001);
+          bars = nextBars.map((n) => Math.pow(n / peak, 0.62));
+
+          totalTimeEl.textContent = formatTime(decoded.duration);
+          audioCtx.close();
+          drawWave(0);
+        } catch (error) {
+          const fallbackCount = 260;
+          bars = Array.from({ length: fallbackCount }, (_, i) => {
+            const wave = Math.sin(i * 0.33) * 0.22 + 0.5;
+            const grit = ((i * 37) % 17) / 20;
+            return Math.max(0.12, Math.min(1, wave + grit));
+          });
+          drawWave(0);
+        }
+      }
+
+      if (heroVideo) {
+        heroVideo.muted = true;
+        heroVideo.defaultMuted = true;
+        heroVideo.volume = 0;
+      }
+
+      if (playLink && bgAudio) {
+        playLink.addEventListener("click", async () => {
+          try {
+            if (bgAudio.paused) {
+              await bgAudio.play();
+            } else {
+              bgAudio.pause();
+            }
+          } catch (error) {
+            playLink.textContent = "Click To Start Audio";
+          }
+        });
+      }
+
+      if (waveform) {
+        waveform.addEventListener("pointerdown", (event) => {
+          dragSeeking = true;
+          seekFromPointer(event.clientX);
+          waveform.setPointerCapture(event.pointerId);
+        });
+
+        waveform.addEventListener("pointermove", (event) => {
+          if (dragSeeking) {
+            seekFromPointer(event.clientX);
+          }
+        });
+
+        waveform.addEventListener("pointerup", () => {
+          dragSeeking = false;
+        });
+
+        waveform.addEventListener("pointerleave", () => {
+          dragSeeking = false;
+        });
+      }
+
+      if (bgAudio) {
+        bgAudio.addEventListener("loadedmetadata", () => {
+          totalTimeEl.textContent = formatTime(bgAudio.duration);
+        });
+
+        bgAudio.addEventListener("timeupdate", () => {
+          currentTimeEl.textContent = formatTime(bgAudio.currentTime);
+          const progress = bgAudio.duration ? bgAudio.currentTime / bgAudio.duration : 0;
+          drawWave(progress);
+        });
+      }
+
+      buildWaveformFromAudio();
+    </script>
+  </body>
+</html>
