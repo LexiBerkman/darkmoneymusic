@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Dark Industrial</title>
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=Bitcount+Grid+Single+Ink:wght@100..900&display=swap");
+
       :root {
         color-scheme: dark;
         --ink: #000;
@@ -71,6 +73,14 @@
         animation: watermark-flicker 8s steps(1, end) infinite;
         pointer-events: none;
         user-select: none;
+      }
+
+      .watermark .sign-jp {
+        font-family: "Hiragino Sans", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+      }
+
+      .watermark .sign-en {
+        font-family: "Bitcount Grid Single Ink", monospace;
       }
 
       @keyframes watermark-flicker {
@@ -207,7 +217,88 @@
     </style>
   </head>
   <body>
-    <img class="watermark" src="public/images/dark-logo.svg" alt="" aria-hidden="true" />
+    <svg class="watermark" viewBox="0 0 320 520" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <defs>
+        <linearGradient id="panel" x1="35" y1="22" x2="262" y2="470" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#160606" />
+          <stop offset="1" stop-color="#040404" />
+        </linearGradient>
+        <linearGradient id="tube" x1="82" y1="76" x2="244" y2="414" gradientUnits="userSpaceOnUse">
+          <stop stop-color="#FF8F8F" />
+          <stop offset="0.4" stop-color="#FF4747" />
+          <stop offset="1" stop-color="#A30000" />
+        </linearGradient>
+        <filter id="redGlow" x="0" y="0" width="320" height="520" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feGaussianBlur stdDeviation="10" result="blur" />
+        </filter>
+        <filter id="softRed" x="18" y="18" width="284" height="484" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+          <feGaussianBlur stdDeviation="3.5" />
+        </filter>
+      </defs>
+
+      <g opacity="0.3" filter="url(#redGlow)">
+        <rect x="44" y="34" width="220" height="452" rx="20" fill="#D81616" />
+        <path d="M87 90H221V102H87V90Z" fill="#FF5A5A" />
+        <path d="M87 156H221V168H87V156Z" fill="#FF5A5A" />
+        <path d="M87 222H221V234H87V222Z" fill="#FF5A5A" />
+        <path d="M87 288H221V300H87V288Z" fill="#FF5A5A" />
+        <path d="M87 354H221V366H87V354Z" fill="#FF5A5A" />
+        <path d="M87 420H221V432H87V420Z" fill="#FF5A5A" />
+      </g>
+
+      <rect x="54" y="42" width="204" height="436" rx="18" fill="url(#panel)" stroke="#3B0F0F" stroke-width="4" />
+      <rect x="67" y="56" width="178" height="408" rx="12" stroke="#631111" stroke-width="2" />
+
+      <g opacity="0.72" filter="url(#softRed)">
+        <path d="M103 98H211V108H103V98Z" fill="#FF5252" />
+        <path d="M103 168H211V178H103V168Z" fill="#FF5252" />
+        <path d="M103 238H211V248H103V238Z" fill="#FF5252" />
+        <path d="M103 308H211V318H103V308Z" fill="#FF5252" />
+        <path d="M103 378H211V388H103V378Z" fill="#FF5252" />
+      </g>
+
+      <g stroke="url(#tube)" stroke-width="9" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M103 101H210" />
+        <path d="M103 171H210" />
+        <path d="M103 241H210" />
+        <path d="M103 311H210" />
+        <path d="M103 381H210" />
+
+        <path d="M103 92V128" />
+        <path d="M156 92V128" />
+        <path d="M210 92V128" />
+
+        <path d="M103 162V198" />
+        <path d="M156 162V198" />
+        <path d="M210 162V198" />
+
+        <path d="M103 232V268" />
+        <path d="M156 232V268" />
+        <path d="M210 232V268" />
+
+        <path d="M103 302V338" />
+        <path d="M156 302V338" />
+        <path d="M210 302V338" />
+
+        <path d="M103 372V408" />
+        <path d="M156 372V408" />
+        <path d="M210 372V408" />
+      </g>
+
+      <g fill="#FFD7D7">
+        <text class="sign-jp" x="157" y="132" text-anchor="middle" font-size="52" font-weight="700" letter-spacing="6">闇資金</text>
+        <text class="sign-jp" x="157" y="184" text-anchor="middle" font-size="20" font-weight="700" letter-spacing="6" opacity="0.96">やみしきん</text>
+        <text class="sign-en" x="157" y="288" text-anchor="middle" font-size="24" font-weight="700" letter-spacing="8">DARK</text>
+        <text class="sign-en" x="157" y="334" text-anchor="middle" font-size="24" font-weight="700" letter-spacing="8">MONEY</text>
+      </g>
+
+      <g opacity="0.5">
+        <circle cx="84" cy="72" r="3.5" fill="#702020" />
+        <circle cx="228" cy="72" r="3.5" fill="#702020" />
+        <circle cx="84" cy="448" r="3.5" fill="#702020" />
+        <circle cx="228" cy="448" r="3.5" fill="#702020" />
+      </g>
+    </svg>
 
     <video
       class="hero-video"
