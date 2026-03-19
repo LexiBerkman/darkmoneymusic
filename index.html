@@ -60,43 +60,71 @@
 
       .watermark {
         position: fixed;
-        top: 18px;
-        right: 20px;
+        top: 10px;
+        right: 14px;
         z-index: 2;
-        width: min(32vw, 240px);
-        opacity: 0.74;
-        filter: drop-shadow(0 0 16px rgba(0, 0, 0, 0.55));
-        animation: watermark-twitch 6s steps(1, end) infinite;
+        width: min(22vw, 148px);
+        opacity: 0.9;
+        filter:
+          drop-shadow(0 0 10px rgba(255, 42, 42, 0.45))
+          drop-shadow(0 0 22px rgba(140, 0, 0, 0.35));
+        animation: watermark-flicker 8s steps(1, end) infinite;
         pointer-events: none;
         user-select: none;
       }
 
-      @keyframes watermark-twitch {
+      @keyframes watermark-flicker {
         0%,
-        82%,
+        74%,
         100% {
           transform: translate3d(0, 0, 0);
-          opacity: 0.74;
+          opacity: 0.9;
         }
 
-        83% {
-          transform: translate3d(-2px, 0, 0);
+        75% {
+          transform: translate3d(0, 1px, 0);
+          opacity: 0.78;
+        }
+
+        76% {
+          transform: translate3d(1px, 0, 0);
+          opacity: 0.97;
+        }
+
+        77% {
+          transform: translate3d(-1px, 0, 0);
+          opacity: 0.72;
+        }
+
+        78% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0.92;
+        }
+
+        90% {
+          transform: translate3d(0, 0, 0);
+          opacity: 0.84;
+        }
+
+        91% {
+          transform: translate3d(0, -1px, 0);
+          opacity: 1;
+        }
+
+        92% {
+          transform: translate3d(0, 0, 0);
           opacity: 0.86;
         }
 
-        84% {
-          transform: translate3d(3px, -1px, 0);
-          opacity: 0.62;
+        93% {
+          transform: translate3d(1px, 0, 0);
+          opacity: 0.95;
         }
 
-        85% {
-          transform: translate3d(-3px, 1px, 0);
-          opacity: 0.82;
-        }
-
-        86% {
+        94%,
+        100% {
           transform: translate3d(0, 0, 0);
-          opacity: 0.74;
+          opacity: 0.9;
         }
       }
 
@@ -162,9 +190,9 @@
 
       @media (max-width: 900px) {
         .watermark {
-          top: 14px;
-          right: 14px;
-          width: min(44vw, 180px);
+          top: 10px;
+          right: 10px;
+          width: min(28vw, 118px);
         }
 
         .audio-dock {
