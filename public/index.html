@@ -60,57 +60,43 @@
 
       .watermark {
         position: fixed;
-        top: 14px;
-        right: 18px;
+        top: 18px;
+        right: 20px;
         z-index: 2;
-        color: rgba(242, 242, 242, 0.24);
-        letter-spacing: 0.02em;
-        font-family: "Helvetica Neue", "Arial Narrow", Arial, sans-serif;
-        font-size: 108px;
-        font-weight: 700;
-        line-height: 0.88;
-        -webkit-text-stroke: 1px rgba(255, 255, 255, 0.08);
-        text-shadow:
-          1px 0 0 rgba(255, 255, 255, 0.18),
-          -2px 0 0 rgba(170, 35, 35, 0.22),
-          0 0 24px rgba(0, 0, 0, 0.7);
-        mix-blend-mode: screen;
-        animation: watermark-twitch 7s steps(1, end) infinite;
+        width: min(32vw, 240px);
+        opacity: 0.74;
+        filter: drop-shadow(0 0 16px rgba(0, 0, 0, 0.55));
+        animation: watermark-twitch 6s steps(1, end) infinite;
         pointer-events: none;
         user-select: none;
       }
 
       @keyframes watermark-twitch {
         0%,
-        86%,
+        82%,
         100% {
           transform: translate3d(0, 0, 0);
-          opacity: 0.22;
+          opacity: 0.74;
         }
 
-        87% {
-          transform: translate3d(-1px, 0, 0);
-          opacity: 0.3;
+        83% {
+          transform: translate3d(-2px, 0, 0);
+          opacity: 0.86;
         }
 
-        88% {
-          transform: translate3d(2px, -1px, 0);
-          opacity: 0.18;
+        84% {
+          transform: translate3d(3px, -1px, 0);
+          opacity: 0.62;
         }
 
-        89% {
-          transform: translate3d(-2px, 1px, 0);
-          opacity: 0.28;
+        85% {
+          transform: translate3d(-3px, 1px, 0);
+          opacity: 0.82;
         }
 
-        90% {
-          transform: translate3d(1px, 0, 0);
-          opacity: 0.2;
-        }
-
-        91% {
+        86% {
           transform: translate3d(0, 0, 0);
-          opacity: 0.22;
+          opacity: 0.74;
         }
       }
 
@@ -176,9 +162,9 @@
 
       @media (max-width: 900px) {
         .watermark {
-          top: 12px;
+          top: 14px;
           right: 14px;
-          font-size: 54px;
+          width: min(44vw, 180px);
         }
 
         .audio-dock {
@@ -193,7 +179,7 @@
     </style>
   </head>
   <body>
-    <div class="watermark" aria-hidden="true">dark $$$</div>
+    <img class="watermark" src="images/dark-logo.svg" alt="" aria-hidden="true" />
 
     <video
       class="hero-video"

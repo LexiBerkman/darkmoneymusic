@@ -1,0 +1,38 @@
+<svg width="480" height="172" viewBox="0 0 480 172" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="logoFade" x1="74" y1="20" x2="382" y2="132" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F4F4F4" stop-opacity="0.95"/>
+      <stop offset="1" stop-color="#B22424" stop-opacity="0.8"/>
+    </linearGradient>
+    <filter id="softGlow" x="0" y="0" width="480" height="172" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
+  <g opacity="0.3">
+    <path d="M54 39H79V114H54V39Z" fill="#F4F4F4"/>
+    <path d="M84 56L110 39H145L119 56H84Z" fill="#F4F4F4"/>
+    <path d="M84 71H123V92H84V71Z" fill="#F4F4F4"/>
+    <path d="M128 56H153V114H128V56Z" fill="#F4F4F4"/>
+    <path d="M167 56H192V114H167V56Z" fill="#F4F4F4"/>
+    <path d="M198 56H223L210 81L226 114H200L189 91L179 104V114H154V39H179V74L198 56Z" fill="#F4F4F4"/>
+    <path d="M245 39H270V63H294V39H319V114H294V85H270V114H245V39Z" fill="#F4F4F4"/>
+    <path d="M334 56H359V114H334V56Z" fill="#F4F4F4"/>
+    <path d="M334 39H359V50H334V39Z" fill="#F4F4F4"/>
+    <path d="M371 56H396V70L411 56H438V114H413V79L398 92V114H373L371 56Z" fill="#F4F4F4"/>
+    <path d="M69 131H420V136H69V131Z" fill="#B22424"/>
+    <path d="M112 22H438V27H112V22Z" fill="#B22424"/>
+  </g>
+  <g filter="url(#softGlow)" opacity="0.28">
+    <path d="M69 131H420V136H69V131Z" fill="#FF3A3A"/>
+    <path d="M112 22H438V27H112V22Z" fill="#FF3A3A"/>
+  </g>
+  <g>
+    <path d="M50 36H78V112H50V36ZM82 54L111 36H149L121 54H82ZM82 70H125V94H82V70ZM129 54H157V112H129V54Z" fill="url(#logoFade)"/>
+    <path d="M170 54H198V112H170V54ZM198 54H226L212 80L229 112H201L189 90L179 104V112H151V36H179V73L198 54Z" fill="url(#logoFade)"/>
+    <path d="M247 36H275V60H300V36H328V112H300V83H275V112H247V36Z" fill="url(#logoFade)"/>
+    <path d="M343 54H371V112H343V54ZM343 36H371V48H343V36Z" fill="url(#logoFade)"/>
+    <path d="M383 54H411V69L428 54H460V112H432V78L411 93V112H383V54Z" fill="url(#logoFade)"/>
+    <path d="M63 127H414V132H63V127Z" fill="#F4F4F4" fill-opacity="0.75"/>
+    <path d="M108 20H430V25H108V20Z" fill="#B22424" fill-opacity="0.85"/>
+  </g>
+</svg>
