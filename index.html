@@ -58,6 +58,21 @@
         background: #000;
       }
 
+      .watermark {
+        position: fixed;
+        top: 14px;
+        right: 18px;
+        z-index: 2;
+        color: rgba(242, 242, 242, 0.28);
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        font-size: 11px;
+        line-height: 1;
+        text-shadow: 0 0 10px rgba(0, 0, 0, 0.45);
+        pointer-events: none;
+        user-select: none;
+      }
+
       .audio-dock {
         position: fixed;
         left: 20px;
@@ -131,6 +146,8 @@
     </style>
   </head>
   <body>
+    <div class="watermark" aria-hidden="true">dark $$$</div>
+
     <video
       class="hero-video"
       src="public/images/homepage faces.mp4"
